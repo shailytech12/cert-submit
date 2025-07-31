@@ -12,6 +12,9 @@ const LandingPage: React.FC = () => {
               <h1 className="text-2xl font-bold text-gray-900">CertifyPro</h1>
             </div>
             <div className="flex items-center space-x-4">
+              <Link to="/demo">
+                <Button variant="secondary">Demo</Button>
+              </Link>
               <Link to="/login">
                 <Button variant="outline">Login</Button>
               </Link>
@@ -33,7 +36,7 @@ const LandingPage: React.FC = () => {
             Streamline your certificate verification process with our comprehensive platform. 
             Students can submit certificates for verification, and administrators can efficiently manage and approve them.
           </p>
-          <div className="mt-5 max-w-md mx-auto sm:flex sm:justify-center md:mt-8">
+          <div className="mt-5 max-w-lg mx-auto sm:flex sm:justify-center md:mt-8">
             <div className="rounded-md shadow">
               <Link to="/register">
                 <Button size="lg" className="w-full">
@@ -45,6 +48,13 @@ const LandingPage: React.FC = () => {
               <Link to="/login">
                 <Button variant="outline" size="lg" className="w-full">
                   Sign In
+                </Button>
+              </Link>
+            </div>
+            <div className="mt-3 rounded-md shadow sm:mt-0 sm:ml-3">
+              <Link to="/demo">
+                <Button variant="secondary" size="lg" className="w-full">
+                  Try Demo
                 </Button>
               </Link>
             </div>
