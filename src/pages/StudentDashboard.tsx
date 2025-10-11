@@ -7,6 +7,10 @@ import { Certificate } from '../types';
 import Button from '../components/ui/Button';
 import CertificateForm from '../components/forms/CertificateForm';
 import CertificateCard from '../components/student/CertificateCard';
+import JobRecommendations from '../components/student/JobRecommendations';
+import JobSearch from '../components/student/JobSearch';
+import ProfileSetup from '../components/student/ProfileSetup';
+import JobApplications from '../components/student/JobApplications';
 import { toast } from 'sonner';
 
 const StudentDashboard: React.FC = () => {
@@ -14,6 +18,7 @@ const StudentDashboard: React.FC = () => {
   const [certificates, setCertificates] = useState<Certificate[]>([]);
   const [loading, setLoading] = useState(true);
   const [showForm, setShowForm] = useState(false);
+  const [activeTab, setActiveTab] = useState<'overview' | 'jobs' | 'search' | 'applications' | 'profile'>('overview');
 
   useEffect(() => {
     if (user) {
@@ -125,118 +130,156 @@ const StudentDashboard: React.FC = () => {
         </div>
       </nav>
 
-      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        {/* Stats */}
-        <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-medium">{statusCounts.total}</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Total Certificates</dt>
-                    <dd className="text-lg font-medium text-gray-900">{statusCounts.total}</dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-medium">{statusCounts.approved}</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Approved</dt>
-                    <dd className="text-lg font-medium text-gray-900">{statusCounts.approved}</dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-medium">{statusCounts.pending}</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Pending</dt>
-                    <dd className="text-lg font-medium text-gray-900">{statusCounts.pending}</dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="bg-white overflow-hidden shadow rounded-lg">
-            <div className="p-5">
-              <div className="flex items-center">
-                <div className="flex-shrink-0">
-                  <div className="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
-                    <span className="text-white font-medium">{statusCounts.rejected}</span>
-                  </div>
-                </div>
-                <div className="ml-5 w-0 flex-1">
-                  <dl>
-                    <dt className="text-sm font-medium text-gray-500 truncate">Rejected</dt>
-                    <dd className="text-lg font-medium text-gray-900">{statusCounts.rejected}</dd>
-                  </dl>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <div className="mb-6">
-          <Button onClick={() => setShowForm(true)} size="lg">
-            Submit New Certificate
-          </Button>
-        </div>
-
-        {/* Certificate Form Modal */}
-        {showForm && (
-          <CertificateForm
-            onSubmit={handleSubmitCertificate}
-            onCancel={() => setShowForm(false)}
-          />
-        )}
-
-        {/* Certificates List */}
-        <div className="space-y-6">
-          <h2 className="text-lg font-medium text-gray-900">Your Certificates</h2>
-          {certificates.length === 0 ? (
-            <div className="text-center py-12">
-              <div className="text-gray-500">No certificates submitted yet.</div>
-              <Button 
-                onClick={() => setShowForm(true)}
-                className="mt-4"
+      {/* Navigation Tabs */}
+      <div className="bg-white border-b border-gray-200">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <nav className="-mb-px flex space-x-8">
+            {[
+              { id: 'overview', label: 'Overview', icon: '📊' },
+              { id: 'jobs', label: 'Job Recommendations', icon: '💼' },
+              { id: 'search', label: 'Job Search', icon: '🔍' },
+              { id: 'applications', label: 'My Applications', icon: '📋' },
+              { id: 'profile', label: 'Profile Setup', icon: '👤' },
+            ].map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id as any)}
+                className={`py-4 px-1 border-b-2 font-medium text-sm flex items-center space-x-2 ${
+                  activeTab === tab.id
+                    ? 'border-blue-500 text-blue-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                }`}
               >
-                Submit Your First Certificate
+                <span>{tab.icon}</span>
+                <span>{tab.label}</span>
+              </button>
+            ))}
+          </nav>
+        </div>
+      </div>
+
+      <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        {/* Tab Content */}
+        {activeTab === 'overview' && (
+          <>
+            {/* Stats */}
+            <div className="grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-4 mb-8">
+              <div className="bg-white overflow-hidden shadow rounded-lg">
+                <div className="p-5">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-blue-500 rounded-md flex items-center justify-center">
+                        <span className="text-white font-medium">{statusCounts.total}</span>
+                      </div>
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-gray-500 truncate">Total Certificates</dt>
+                        <dd className="text-lg font-medium text-gray-900">{statusCounts.total}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white overflow-hidden shadow rounded-lg">
+                <div className="p-5">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-green-500 rounded-md flex items-center justify-center">
+                        <span className="text-white font-medium">{statusCounts.approved}</span>
+                      </div>
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-gray-500 truncate">Approved</dt>
+                        <dd className="text-lg font-medium text-gray-900">{statusCounts.approved}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white overflow-hidden shadow rounded-lg">
+                <div className="p-5">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-yellow-500 rounded-md flex items-center justify-center">
+                        <span className="text-white font-medium">{statusCounts.pending}</span>
+                      </div>
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-gray-500 truncate">Pending</dt>
+                        <dd className="text-lg font-medium text-gray-900">{statusCounts.pending}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white overflow-hidden shadow rounded-lg">
+                <div className="p-5">
+                  <div className="flex items-center">
+                    <div className="flex-shrink-0">
+                      <div className="w-8 h-8 bg-red-500 rounded-md flex items-center justify-center">
+                        <span className="text-white font-medium">{statusCounts.rejected}</span>
+                      </div>
+                    </div>
+                    <div className="ml-5 w-0 flex-1">
+                      <dl>
+                        <dt className="text-sm font-medium text-gray-500 truncate">Rejected</dt>
+                        <dd className="text-lg font-medium text-gray-900">{statusCounts.rejected}</dd>
+                      </dl>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {/* Action Button */}
+            <div className="mb-6">
+              <Button onClick={() => setShowForm(true)} size="lg">
+                Submit New Certificate
               </Button>
             </div>
-          ) : (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-              {certificates.map((certificate) => (
-                <CertificateCard key={certificate.id} certificate={certificate} />
-              ))}
+
+            {/* Certificate Form Modal */}
+            {showForm && (
+              <CertificateForm
+                onSubmit={handleSubmitCertificate}
+                onCancel={() => setShowForm(false)}
+              />
+            )}
+
+            {/* Certificates List */}
+            <div className="space-y-6">
+              <h2 className="text-lg font-medium text-gray-900">Your Certificates</h2>
+              {certificates.length === 0 ? (
+                <div className="text-center py-12">
+                  <div className="text-gray-500">No certificates submitted yet.</div>
+                  <Button 
+                    onClick={() => setShowForm(true)}
+                    className="mt-4"
+                  >
+                    Submit Your First Certificate
+                  </Button>
+                </div>
+              ) : (
+                <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+                  {certificates.map((certificate) => (
+                    <CertificateCard key={certificate.id} certificate={certificate} />
+                  ))}
+                </div>
+              )}
             </div>
-          )}
-        </div>
+          </>
+        )}
+
+        {activeTab === 'jobs' && <JobRecommendations />}
+        {activeTab === 'search' && <JobSearch />}
+        {activeTab === 'applications' && <JobApplications />}
+        {activeTab === 'profile' && <ProfileSetup />}
       </div>
     </div>
   );
