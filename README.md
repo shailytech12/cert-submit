@@ -84,8 +84,8 @@ User → Multer Middleware → Server → MongoDB → Frontend Display
 ### 1. Clone the Repository
 
 ```
-git clone https://github.com/Yuva-Deekshitha-N/<your-repository-name>.git
-cd <your-repository-name>
+git clone https://github.com/shailytech12/cert-submit.git
+cd cert-submit
 ```
 
 ### 2. Install Dependencies
