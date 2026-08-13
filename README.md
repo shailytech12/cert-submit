@@ -161,5 +161,3 @@ http://localhost:3000
 * Cloud-based file storage integration
 * Blockchain-based certificate verification
 * Downloadable submission reports
-
-If you would like, I can also provide a concise 3–4 line version tailored specifically for your resume or portfolio.
