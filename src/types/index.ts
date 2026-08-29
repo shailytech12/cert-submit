@@ -2,9 +2,10 @@ export interface User {
   id: string;
   email: string;
   name: string;
-  role: 'student' | 'admin';
+  role: 'student' | 'admin' | 'recruiter';
   createdAt: Date;
   avatar?: string;
+  displayName?: string;
 }
 
 export interface Certificate {
@@ -41,7 +42,7 @@ export interface AuthContextType {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<void>;
-  register: (email: string, password: string, name: string, role: 'student' | 'admin') => Promise<void>;
+  register: (email: string, password: string, name: string, role: 'student' | 'admin' | 'recruiter') => Promise<void>;
   logout: () => Promise<void>;
 }
 
