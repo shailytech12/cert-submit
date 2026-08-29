@@ -6,6 +6,9 @@ import RegisterPage from './pages/RegisterPage';
 import StudentDashboard from './pages/StudentDashboard';
 import AdminDashboard from './pages/AdminDashboard';
 import LandingPage from './pages/LandingPage';
+import MLHealthCheck from './pages/MLHealthCheck';
+import JobMatcher from './pages/JobMatcher';
+import JobRecommendations from './pages/JobRecommendations';
 
 function App() {
   const { user, loading } = useAuth();
@@ -29,6 +32,10 @@ function App() {
           )
         } 
       />
+      {/* ML Testing Routes - Available to all users */}
+      <Route path="/ml-health-check" element={<MLHealthCheck />} />
+      <Route path="/job-matcher" element={<JobMatcher />} />
+      <Route path="/job-recommendations" element={<JobRecommendations />} />
       <Route path="*" element={<Navigate to="/" />} />
     </Routes>
   );

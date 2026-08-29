@@ -51,3 +51,42 @@ export interface DashboardStats {
   pendingCertificates: number;
   rejectedCertificates: number;
 }
+
+// ML Model Related Types
+export interface MLHealthStatus {
+  status: 'healthy' | 'unhealthy' | 'unknown';
+  message: string;
+  lastChecked?: Date;
+}
+
+export interface ResumeParsingResult {
+  skills: string[];
+  experience: string[];
+  education: string[];
+  confidence: number;
+}
+
+export interface JobMatchResult {
+  match_result: string;
+  probability: number;
+  matched_skills: string[];
+  missing_skills: string[];
+  recommendation: string;
+}
+
+export interface JobRecommendation {
+  id: string;
+  title: string;
+  company: string;
+  location: string;
+  match_score: number;
+  salary_range: string;
+  description: string;
+}
+
+export interface MLTestResult {
+  success: boolean;
+  message: string;
+  data?: any;
+  error?: string;
+}
